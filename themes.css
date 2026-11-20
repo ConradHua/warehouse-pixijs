@@ -1,0 +1,966 @@
+/* Design-school themes. Loaded before styles.css / style-warehouse.css.
+   html[data-theme] selects a table; harbor is also :root (default).
+   Pixi rack / cargo / PDA semantic colors are intentionally NOT tokens. */
+
+:root,
+html[data-theme="harbor"] {
+  --shell-bg: #E8EFF4;
+  --topbar-bg: #162C3A;
+  --nav-bg: #1E4E5E;
+  --nav-hover: #265A6C;
+  --accent: #006E7A;
+  --accent-strong: #185466;
+  --accent-soft: #B8E8EC;
+  --ops-surface: #DCE8EE;
+  --ops-accent: #006E7A;
+  --ops-accent-soft: #B5DDE2;
+  --border: #7D96A8;
+  --panel: rgba(255, 255, 255, 0.88);
+  --panel-solid: #FFFFFF;
+  --ink: #0B2336;
+  --muted: #4E6578;
+  --focus-ring: #006E7A;
+  --status-bg: #D5E4EA;
+  --chrome-text: #F4F7FA;
+  --nav-active-line: #46DCE3;
+  --teal: var(--accent);
+  --cyan: var(--accent-strong);
+  --font-ui: "Bahnschrift", "Arial Narrow", "Segoe UI", Arial, sans-serif;
+  --radius-control: 5px;
+  --radius-panel: 6px;
+  --radius-overlay: 10px;
+  --shadow-panel: 0 8px 28px rgba(11, 40, 56, 0.12);
+  --chrome-sheen: none;
+  --input-well: none;
+  --input-focus-bg: #FFFFFF;
+  --hover-surface: #D7F1F4;
+  --hover-border: #006E7A;
+  --icon-stroke: 1.65;
+  --icon-cap: round;
+  --icon-join: round;
+  --table-row-h: 32px;
+  --table-cell-line: transparent;
+  --table-zebra: rgba(242, 247, 250, 0.68);
+  --table-hover: #E5F6F8;
+  --table-header-bg: #EBF1F5;
+  --table-grid: #DFEBF2;
+  --shell-pattern: none;
+  --panel-blur: blur(6px);
+  --statusbar-bg: var(--topbar-bg);
+  --statusbar-text: var(--chrome-text);
+  --panel-header-bg: linear-gradient(105deg, var(--accent-strong), var(--nav-bg) 80%, var(--accent));
+  --panel-header-text: #FFFFFF;
+  --gold: transparent;
+  --signature-gold: #F2B418;
+}
+
+html[data-theme="mineral"] {
+  --shell-bg: #EAECE6;
+  --topbar-bg: #2A4038;
+  --nav-bg: #2A4038;
+  --nav-hover: #354D46;
+  --accent: #265345;
+  --accent-strong: #1F302B;
+  --accent-soft: #D7E4DC;
+  --ops-surface: #E4E7E0;
+  --ops-accent: #265345;
+  --ops-accent-soft: #D0DDD4;
+  --border: #7E8E85;
+  --panel: #FBFBF8;
+  --panel-solid: #FBFBF8;
+  --ink: #1E2A26;
+  --muted: #52615B;
+  --focus-ring: #265345;
+  --status-bg: #E4E8E2;
+  --chrome-text: #F4F7F5;
+  --nav-active-line: #8F4C24;
+  --teal: var(--accent);
+  --cyan: var(--accent-strong);
+  --font-ui: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --radius-control: 2px;
+  --radius-panel: 3px;
+  --radius-overlay: 4px;
+  --shadow-panel: 2px 2px 0 rgba(42, 64, 56, 0.18);
+  --chrome-sheen: none;
+  --input-well: none;
+  --input-focus-bg: #FFFFFF;
+  --hover-surface: #D9E2DB;
+  --hover-border: #265345;
+  --icon-stroke: 1.45;
+  --icon-cap: butt;
+  --icon-join: miter;
+  --table-row-h: 34px;
+  --table-cell-line: #E2E7E1;
+  --table-zebra: #F3F5F0;
+  --table-hover: #E4EDE6;
+  --table-header-bg: #E8ECE5;
+  --table-grid: #D8DED7;
+  --shell-pattern: radial-gradient(circle at 1px 1px, rgba(42, 64, 56, 0.18) 1px, transparent 0);
+  --panel-blur: none;
+  --statusbar-bg: #1F302B;
+  --statusbar-text: #F4F7F5;
+  --panel-header-bg: #2F4D44;
+  --panel-header-text: #F7FAF8;
+  --gold: transparent;
+  --signature-gold: #F2B418;
+  --ochre: #8F4C24;
+}
+
+html[data-theme="sap-signature"] {
+  --shell-bg: #EBF2F9;
+  --topbar-bg: #DFECF8;
+  --nav-bg: #1D5690;
+  --nav-hover: #17477A;
+  --accent: #165796;
+  --accent-strong: #124878;
+  --accent-soft: #D6E7F7;
+  --ops-surface: #E4EEF7;
+  --ops-accent: #165796;
+  --ops-accent-soft: #D2E3F4;
+  --border: #7290AE;
+  --panel: #FFFFFF;
+  --panel-solid: #FFFFFF;
+  --ink: #122942;
+  --muted: #455F7A;
+  --focus-ring: #165796;
+  --status-bg: #E8F1FA;
+  --chrome-text: #F4F8FC;
+  --nav-active-line: #F2B418;
+  --teal: var(--accent);
+  --cyan: var(--accent-strong);
+  --font-ui: "Segoe UI", Tahoma, Arial, sans-serif;
+  --radius-control: 2px;
+  --radius-panel: 3px;
+  --radius-overlay: 3px;
+  --shadow-panel: 0 2px 8px rgba(18, 41, 66, 0.18);
+  --chrome-sheen: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  --input-well: inset 0 1px 2px rgba(18, 41, 66, 0.12);
+  --input-focus-bg: #FFFDF2;
+  --hover-surface: linear-gradient(180deg, #FFF6D6 0%, #FDE39C 55%, #F2C75C 100%);
+  --hover-border: #BA7F00;
+  --icon-stroke: 1.5;
+  --icon-cap: square;
+  --icon-join: miter;
+  --table-row-h: 29px;
+  --table-cell-line: #C9D9E8;
+  --table-zebra: #F4F8FD;
+  --table-hover: #CBE2FA;
+  --table-header-bg: linear-gradient(180deg, #E8F2FC 0%, #D2E3F4 55%, #C3D9EE 100%);
+  --table-grid: #C9D9E8;
+  --shell-pattern: none;
+  --panel-blur: none;
+  --statusbar-bg: linear-gradient(180deg, #E8F1FA 0%, #DCE7F3 55%, #CEDEEB 100%);
+  --statusbar-text: #16304C;
+  --panel-header-bg: linear-gradient(180deg, #E8F2FC 0%, #D2E3F4 55%, #C3D9EE 100%);
+  --panel-header-text: #122E4D;
+  --gold: #F2B418;
+  --signature-gold: #F2B418;
+}
+
+/* ---------- Shared token consumers (shell chrome) ---------- */
+
+html {
+  font-family: var(--font-ui);
+}
+
+.icon {
+  stroke-width: var(--icon-stroke);
+  stroke-linecap: var(--icon-cap);
+  stroke-linejoin: var(--icon-join);
+}
+
+.app-shell {
+  background-color: var(--shell-bg);
+  background-image: var(--shell-pattern);
+  background-size: auto, 24px 24px;
+}
+
+html[data-theme="mineral"] .app-shell {
+  background-image: var(--shell-pattern);
+  background-size: 24px 24px;
+}
+
+html[data-theme="harbor"] .app-shell {
+  background-color: var(--shell-bg);
+  background-image:
+    radial-gradient(ellipse at 55% 24%, rgba(255, 255, 255, 0.72) 0, transparent 55%),
+    radial-gradient(ellipse at 70% 80%, #D5E4EA 0, var(--shell-bg) 70%);
+  background-size: auto, auto;
+}
+
+html[data-theme="harbor"] #warehouse-root .kpi-pill {
+  border-radius: 99px;
+}
+
+.query-panel,
+.results-panel,
+.inbound-panel,
+.task-panel,
+.dropdown-panel {
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-panel);
+}
+
+.dropdown-panel {
+  border-radius: var(--radius-overlay);
+}
+
+input,
+select,
+.primary-button,
+.outline-button,
+.light-button,
+.footer-button,
+.theme-button,
+.icon-button,
+.small-button {
+  border-radius: var(--radius-control);
+}
+
+input,
+select {
+  box-shadow: var(--input-well);
+  background-color: var(--panel-solid);
+}
+
+input:focus,
+select:focus {
+  background-color: var(--input-focus-bg);
+}
+
+.inventory-table td {
+  height: var(--table-row-h);
+  border-right: 1px solid var(--table-cell-line);
+}
+
+.inventory-table td:last-child {
+  border-right: 0;
+}
+
+.inventory-table th {
+  background: var(--table-header-bg);
+  border-color: var(--table-grid);
+}
+
+.inventory-table td {
+  border-bottom-color: var(--table-grid);
+}
+
+.inventory-table tbody tr:nth-child(even) {
+  background: var(--table-zebra);
+}
+
+.inventory-table tbody tr:hover {
+  background: var(--table-hover);
+}
+
+.panel-title,
+.query-title,
+.results-title {
+  background: var(--panel-header-bg);
+  color: var(--panel-header-text);
+  box-shadow: var(--chrome-sheen);
+}
+
+.nav-link.active::after,
+.hover-nav .nav-home.active::after {
+  background: var(--nav-active-line);
+}
+
+/* ---------- Harbor refinements ---------- */
+
+html[data-theme="harbor"] .query-panel,
+html[data-theme="harbor"] .results-panel,
+html[data-theme="harbor"] .inbound-panel,
+html[data-theme="harbor"] .task-panel {
+  background: var(--panel);
+  backdrop-filter: var(--panel-blur);
+  -webkit-backdrop-filter: var(--panel-blur);
+  border: 1px solid rgba(125, 150, 168, 0.35);
+}
+
+html[data-theme="harbor"] .login-hero {
+  background: radial-gradient(ellipse at 50% -10%, #1E4E5E 0%, #163A46 55%, #0F2C36 100%);
+  border-right-color: #2A7A88;
+}
+
+html[data-theme="harbor"] .dropdown-panel button:hover,
+html[data-theme="harbor"] .dropdown-panel a:hover {
+  background: var(--hover-surface);
+  color: var(--accent-strong);
+  box-shadow: inset 0 0 0 1px var(--hover-border);
+}
+
+/* ---------- Mineral studio ---------- */
+
+html[data-theme="mineral"] .query-panel,
+html[data-theme="mineral"] .results-panel,
+html[data-theme="mineral"] .inbound-panel,
+html[data-theme="mineral"] .task-panel,
+html[data-theme="mineral"] .dropdown-panel {
+  background: var(--panel-solid);
+  border: 1px solid #A8B4AC;
+  box-shadow: var(--shadow-panel);
+  backdrop-filter: none;
+}
+
+html[data-theme="mineral"] .topbar,
+html[data-theme="mineral"] .main-nav,
+html[data-theme="mineral"] .statusbar {
+  background: var(--topbar-bg);
+  box-shadow: none;
+}
+
+html[data-theme="mineral"] .main-nav {
+  background: var(--nav-bg);
+}
+
+html[data-theme="mineral"] .panel-title,
+html[data-theme="mineral"] .query-title,
+html[data-theme="mineral"] .results-title {
+  background: var(--panel-header-bg);
+  color: var(--panel-header-text);
+}
+
+html[data-theme="mineral"] .login-hero {
+  background: #2A4038;
+  border-right: 2px solid #3D5A4E;
+}
+
+html[data-theme="mineral"] .login-panel {
+  background: #FBFBF8;
+}
+
+html[data-theme="mineral"] .dropdown-panel button:hover,
+html[data-theme="mineral"] .dropdown-panel a:hover {
+  background: var(--nav-bg);
+  color: #F7FAF8;
+}
+
+html[data-theme="mineral"] .primary-button:hover,
+html[data-theme="mineral"] .footer-button.accent:hover {
+  background: var(--nav-bg);
+}
+
+html[data-theme="mineral"] .inventory-table {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+html[data-theme="mineral"] .inventory-table th {
+  border-right: 1px solid var(--table-cell-line);
+}
+
+html[data-theme="mineral"] .hold-badge.on-hold {
+  /* Keep Hold amber — do not retint with ochre */
+  background: linear-gradient(#ffd780, #ffc45f);
+  color: #161c1e;
+}
+
+html[data-theme="mineral"] .theme-panel [aria-checked="true"] {
+  background: #E4EDE6;
+  color: var(--accent-strong);
+  box-shadow: inset 0 0 0 1px var(--ochre);
+}
+
+html[data-theme="mineral"] #warehouse-root span.mark {
+  border-radius: 2px;
+  background: transparent;
+  color: var(--ops-accent);
+  border: 2px double var(--ops-accent);
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  font-weight: 700;
+}
+
+html[data-theme="mineral"] #warehouse-root .kpi-pill {
+  border-radius: var(--radius-control);
+}
+
+html[data-theme="mineral"] #warehouse-root .inspector,
+html[data-theme="mineral"] #elevation-modal .modal-card {
+  border-radius: var(--radius-overlay);
+  box-shadow: var(--shadow-panel);
+}
+
+/* ---------- SAP Signature (deepest morphological delta) ---------- */
+
+html[data-theme="sap-signature"] .topbar {
+  color: #122E4D;
+  background: linear-gradient(180deg, #F4F9FE 0%, #DFECF8 58%, #CFE0F2 100%);
+  border-bottom: 1px solid #95B1CC;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), inset 0 -1px 0 #95B1CC;
+}
+
+html[data-theme="sap-signature"] .topbar .brand strong,
+html[data-theme="sap-signature"] .topbar .desk-name,
+html[data-theme="sap-signature"] .topbar .header-date,
+html[data-theme="sap-signature"] .topbar .account-button {
+  color: #122E4D;
+}
+
+html[data-theme="sap-signature"] .brand-divider,
+html[data-theme="sap-signature"] .header-divider {
+  background: #95B1CC;
+}
+
+html[data-theme="sap-signature"] .warehouse-code {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 10px;
+  font-family: Consolas, "Cascadia Mono", monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #122E4D;
+  background: #FFFFFF;
+  border: 1px solid #7290AE;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgba(18, 41, 66, 0.16);
+}
+
+html[data-theme="sap-signature"] .theme-button,
+html[data-theme="sap-signature"] .account-button {
+  color: #122E4D;
+  border-color: #95B1CC;
+  background: transparent;
+}
+
+html[data-theme="sap-signature"] .theme-button:hover,
+html[data-theme="sap-signature"] .topbar .account-button:hover {
+  background: linear-gradient(180deg, #FFF6D6 0%, #FDE39C 55%, #F2C75C 100%);
+  border-color: #BA7F00;
+  color: #1A2D42;
+}
+
+html[data-theme="sap-signature"] .main-nav,
+html[data-theme="sap-signature"] .home-screen .hover-nav {
+  background: linear-gradient(180deg, #2D6EB0 0%, #1D5690 52%, #17477A 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), inset 0 -1px 0 #0F3558;
+}
+
+html[data-theme="sap-signature"] .nav-link {
+  position: relative;
+}
+
+html[data-theme="sap-signature"] .nav-dropdown + .nav-dropdown::before,
+html[data-theme="sap-signature"] .hover-nav > .nav-link + .nav-dropdown::before,
+html[data-theme="sap-signature"] .hover-nav .nav-dropdown + .nav-dropdown::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  pointer-events: none;
+}
+
+html[data-theme="sap-signature"] .nav-dropdown {
+  position: relative;
+}
+
+html[data-theme="sap-signature"] .nav-link.active::after,
+html[data-theme="sap-signature"] .hover-nav .nav-home.active::after,
+html[data-theme="sap-signature"] .inventory-screen .nav-link.active::after,
+html[data-theme="sap-signature"] .inbound-screen .nav-link.active::after {
+  height: 3px;
+  background: #F2B418;
+}
+
+html[data-theme="sap-signature"] .dropdown-panel:not(.horizontal-menu) {
+  padding: 0;
+  border: 1px solid #7290AE;
+  border-radius: 2px;
+  box-shadow: 0 4px 14px rgba(18, 41, 66, 0.22);
+  background:
+    linear-gradient(#E5EFF9, #E5EFF9) left / 28px 100% no-repeat,
+    #FFFFFF;
+}
+
+html[data-theme="sap-signature"] .dropdown-panel:not(.horizontal-menu)::before {
+  content: "";
+  position: absolute;
+  left: 28px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #C5D5E6;
+  pointer-events: none;
+}
+
+html[data-theme="sap-signature"] .dropdown-panel:not(.horizontal-menu) button,
+html[data-theme="sap-signature"] .dropdown-panel:not(.horizontal-menu) a,
+html[data-theme="sap-signature"] .dropdown-panel:not(.horizontal-menu) label {
+  border-radius: 0;
+  padding-left: 36px;
+  min-height: 30px;
+}
+
+html[data-theme="sap-signature"] .dropdown-panel:not(.horizontal-menu) button:hover,
+html[data-theme="sap-signature"] .dropdown-panel:not(.horizontal-menu) a:hover,
+html[data-theme="sap-signature"] .column-options label:hover {
+  background: linear-gradient(180deg, #FFF6D6 0%, #FDE39C 100%);
+  color: #1A2D42;
+  box-shadow: inset 0 0 0 1px #BA7F00;
+}
+
+html[data-theme="sap-signature"] .hover-nav .horizontal-menu {
+  background: #1D5690;
+  border: 1px solid #0F3558;
+  border-radius: 0 0 2px 2px;
+  box-shadow: 0 6px 16px rgba(18, 41, 66, 0.28);
+}
+
+html[data-theme="sap-signature"] .hover-nav .horizontal-menu a:hover,
+html[data-theme="sap-signature"] .hover-nav .horizontal-menu button:hover {
+  background: linear-gradient(180deg, #FFF6D6 0%, #FDE39C 100%);
+  color: #1A2D42;
+}
+
+html[data-theme="sap-signature"] .panel-title,
+html[data-theme="sap-signature"] .query-title,
+html[data-theme="sap-signature"] .results-title {
+  background: linear-gradient(180deg, #E8F2FC 0%, #D2E3F4 55%, #C3D9EE 100%);
+  color: #122E4D;
+  border-bottom: 1px solid #8FA9C4;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+html[data-theme="sap-signature"] .tool-button {
+  color: #122E4D;
+}
+
+html[data-theme="sap-signature"] .tool-button:hover {
+  color: #BA7F00;
+}
+
+html[data-theme="sap-signature"] .result-title-divider {
+  background: #8FA9C4;
+}
+
+html[data-theme="sap-signature"] .query-panel,
+html[data-theme="sap-signature"] .results-panel,
+html[data-theme="sap-signature"] .inbound-panel {
+  border: 1px solid #8FA9C4;
+  border-radius: 3px;
+  box-shadow: var(--shadow-panel);
+  background: #FFFFFF;
+}
+
+html[data-theme="sap-signature"] .query-field input,
+html[data-theme="sap-signature"] .query-field select,
+html[data-theme="sap-signature"] .login-field input,
+html[data-theme="sap-signature"] .login-field select,
+html[data-theme="sap-signature"] .column-filter-row input,
+html[data-theme="sap-signature"] .column-filter-row select {
+  border: 1px solid #7290AE;
+  border-radius: 2px;
+  background: #FFFFFF;
+  box-shadow: inset 0 1px 2px rgba(18, 41, 66, 0.12);
+}
+
+html[data-theme="sap-signature"] .query-field input:focus,
+html[data-theme="sap-signature"] .query-field select:focus,
+html[data-theme="sap-signature"] .login-field input:focus,
+html[data-theme="sap-signature"] .login-field select:focus {
+  border-color: #165796;
+  background: #FFFDF2;
+  box-shadow: inset 0 1px 2px rgba(18, 41, 66, 0.1), 0 0 0 1px #165796;
+}
+
+html[data-theme="sap-signature"] .inventory-table {
+  color: #122942;
+  font-size: 12.5px;
+}
+
+html[data-theme="sap-signature"] .inventory-table th {
+  background: linear-gradient(180deg, #E8F2FC 0%, #D2E3F4 55%, #C3D9EE 100%);
+  border: 1px solid #C9D9E8;
+  color: #122E4D;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+html[data-theme="sap-signature"] .inventory-table td {
+  height: 29px;
+  border: 1px solid #C9D9E8;
+  border-top: 0;
+}
+
+html[data-theme="sap-signature"] .inbound-table td {
+  height: 29px;
+}
+
+html[data-theme="mineral"] .inbound-table td {
+  height: 34px;
+}
+
+html[data-theme="sap-signature"] .inventory-table tbody tr:nth-child(even) {
+  background: #F4F8FD;
+}
+
+html[data-theme="sap-signature"] .inventory-table tbody tr:hover {
+  background: #CBE2FA;
+  color: #0E2640;
+  outline: 1px solid #7FA9D6;
+}
+
+html[data-theme="sap-signature"] .grouping-hint {
+  background: linear-gradient(180deg, #E8F2FC, #D5E4F2);
+  color: #122E4D;
+  border-bottom-color: #A8BFD4;
+}
+
+html[data-theme="sap-signature"] .pagination-bar {
+  background: linear-gradient(180deg, #E8F1FA, #D5E3F0);
+  border-top: 1px solid #A8BFD4;
+  border-radius: 0 0 3px 3px;
+}
+
+html[data-theme="sap-signature"] .statusbar {
+  color: #16304C;
+  background: linear-gradient(180deg, #E8F1FA 0%, #DCE7F3 55%, #CEDEEB 100%);
+  border-top: 1px solid #9BB4CE;
+  box-shadow: inset 0 1px 0 #FFFFFF;
+}
+
+html[data-theme="sap-signature"] .footer-divider {
+  width: 2px;
+  background: linear-gradient(90deg, #9BB4CE 0 1px, #FFFFFF 1px 2px);
+  height: 26px;
+}
+
+html[data-theme="sap-signature"] .status-dot {
+  background: radial-gradient(circle at 30% 30%, #7CFFC8, #00A878 60%, #007A58);
+  box-shadow: inset 0 -1px 2px rgba(0, 0, 0, 0.25), 0 0 0 1px #7FA9D6;
+}
+
+html[data-theme="sap-signature"] .footer-button {
+  color: #16304C;
+  border: 1px solid #8FA9C4;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #E8F1FA 55%, #D5E4F2 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+html[data-theme="sap-signature"] .footer-button:hover {
+  background: linear-gradient(180deg, #FFF6D6 0%, #FDE39C 55%, #F2C75C 100%);
+  border-color: #BA7F00;
+  color: #1A2D42;
+}
+
+html[data-theme="sap-signature"] .footer-button.accent {
+  color: #FFFFFF;
+  background: linear-gradient(180deg, #2D7CC0 0%, #165796 55%, #124878 100%);
+  border-color: #0F3F66;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+html[data-theme="sap-signature"] .footer-button.accent:hover {
+  background: linear-gradient(180deg, #FFF6D6 0%, #F2C75C 100%);
+  border-color: #BA7F00;
+  color: #1A2D42;
+}
+
+html[data-theme="sap-signature"] .primary-button {
+  background: linear-gradient(180deg, #2D7CC0 0%, #165796 55%, #124878 100%);
+  border-color: #0F3F66;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+html[data-theme="sap-signature"] .primary-button:hover {
+  background: linear-gradient(180deg, #FFF6D6 0%, #FDE39C 55%, #F2C75C 100%);
+  border-color: #BA7F00;
+  color: #1A2D42;
+}
+
+html[data-theme="sap-signature"] .login-hero {
+  background:
+    radial-gradient(ellipse at 18% 12%, rgba(184, 220, 255, 0.35), transparent 42%),
+    radial-gradient(ellipse at 82% 78%, rgba(242, 180, 24, 0.12), transparent 40%),
+    linear-gradient(145deg, #16477C 0%, #1A568F 42%, #0F3558 100%);
+  border-right: 2px solid #2A6BA8;
+}
+
+html[data-theme="sap-signature"] .warehouse-step {
+  border: 1px solid rgba(184, 220, 255, 0.45);
+  border-radius: 2px;
+  padding: 8px 10px 10px;
+  background: rgba(15, 53, 88, 0.28);
+}
+
+html[data-theme="sap-signature"] .warehouse-step + .warehouse-step {
+  padding-left: 10px;
+}
+
+html[data-theme="sap-signature"] .warehouse-step + .warehouse-step::before {
+  display: none;
+}
+
+html[data-theme="sap-signature"] .step-number {
+  color: #F2B418;
+  border-bottom-color: rgba(184, 220, 255, 0.45);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+html[data-theme="sap-signature"] .login-panel {
+  background: linear-gradient(180deg, #F4F9FE, #E8F1FA);
+  padding-top: 40px;
+}
+
+html[data-theme="sap-signature"] .login-content {
+  border: 1px solid #8FA9C4;
+  border-radius: 3px;
+  background: #F7FAFD;
+  box-shadow: 0 4px 18px rgba(18, 41, 66, 0.14);
+  padding: 0 28px 28px;
+  max-width: 640px;
+}
+
+html[data-theme="sap-signature"] .login-content::before {
+  content: "SAP-Style WMS Logon · Client WH-01";
+  display: block;
+  margin: 0 -28px 18px;
+  padding: 10px 28px;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.3px;
+  color: #122E4D;
+  background: linear-gradient(180deg, #E8F2FC 0%, #D2E3F4 55%, #C3D9EE 100%);
+  border-bottom: 1px solid #8FA9C4;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+html[data-theme="sap-signature"] .login-content .secure-access {
+  margin-top: 8px;
+}
+
+html[data-theme="sap-signature"] #warehouse-root .ops-bar {
+  background: linear-gradient(180deg, #F4F9FE 0%, #DFECF8 58%, #CFE0F2 100%);
+  border-bottom: 1px solid #95B1CC;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+html[data-theme="sap-signature"] #warehouse-root .kpi-bar {
+  background: linear-gradient(180deg, #E8F1FA, #DCE7F3);
+  border-bottom-color: #A8BFD4;
+}
+
+html[data-theme="sap-signature"] #warehouse-root span.mark {
+  border-radius: 2px;
+  background: linear-gradient(180deg, #2D7CC0, #165796);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+html[data-theme="sap-signature"] #warehouse-root span.mark::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  background: #F2B418;
+}
+
+html[data-theme="sap-signature"] #warehouse-root .kpi-pill {
+  border-radius: 2px;
+  background: linear-gradient(180deg, #FFFFFF, #E8F1FA);
+  border-color: #8FA9C4;
+  box-shadow: inset 0 1px 0 #fff;
+}
+
+html[data-theme="sap-signature"] #warehouse-root .kpi-pill:hover {
+  background: linear-gradient(180deg, #FFF6D6, #FDE39C);
+  border-color: #BA7F00;
+}
+
+html[data-theme="sap-signature"] #warehouse-root .kpi-pill.is-active {
+  background: linear-gradient(180deg, #2D7CC0, #165796);
+  border-color: #0F3F66;
+  color: #fff;
+}
+
+/* Preserve Pixi semantic KPI colors when active */
+html[data-theme="sap-signature"] #warehouse-root .kpi-pill.pill-in.is-active {
+  background: #2b6cb0;
+  border-color: #2b6cb0;
+}
+html[data-theme="sap-signature"] #warehouse-root .kpi-pill.pill-out.is-active {
+  background: #2c855c;
+  border-color: #2c855c;
+}
+html[data-theme="sap-signature"] #warehouse-root .kpi-pill.pill-int.is-active {
+  background: #6f52ad;
+  border-color: #6f52ad;
+}
+
+html[data-theme="sap-signature"] #warehouse-root .inspector {
+  border: 2px solid #8FA9C4;
+  border-radius: 3px;
+  box-shadow: 0 4px 16px rgba(18, 41, 66, 0.18);
+}
+
+html[data-theme="sap-signature"] #warehouse-root .inspector-top {
+  background: linear-gradient(180deg, #E8F2FC 0%, #D2E3F4 100%);
+  border-bottom: 1px solid #8FA9C4;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+html[data-theme="sap-signature"] #warehouse-root .modal-sheet {
+  border: 2px solid #8FA9C4;
+  border-radius: 3px;
+  box-shadow: 0 8px 28px rgba(18, 41, 66, 0.28);
+}
+
+html[data-theme="sap-signature"] #warehouse-root .modal-header {
+  background: linear-gradient(180deg, #E8F2FC 0%, #D2E3F4 100%);
+  border-bottom: 1px solid #8FA9C4;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+html[data-theme="mineral"] #warehouse-root .modal-sheet {
+  border-radius: var(--radius-overlay);
+  box-shadow: var(--shadow-panel);
+  border: 1px solid #A8B4AC;
+}
+
+html[data-theme="sap-signature"] #warehouse-root .ops-status {
+  background: linear-gradient(180deg, #E8F1FA, #DCE7F3);
+  border-top: 1px solid #9BB4CE;
+  color: #16304C;
+}
+
+html[data-theme="sap-signature"] dialog {
+  border-radius: 3px;
+  border-top: 3px solid #165796;
+}
+
+html[data-theme="sap-signature"] .toast {
+  background: #16304Cf5;
+  border-color: #7FA9D6;
+}
+
+/* Theme picker preview cards */
+.theme-panel {
+  min-width: 250px;
+  width: 250px;
+  padding: 6px;
+  display: grid;
+  gap: 4px;
+}
+
+.theme-option {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px;
+  text-align: left;
+  border-radius: var(--radius-control);
+  border: 1px solid transparent;
+}
+
+.theme-option:hover {
+  background: var(--hover-surface);
+  border-color: var(--hover-border);
+  color: inherit;
+}
+
+.theme-option[aria-checked="true"] {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-weight: 650;
+  border-color: var(--hover-border);
+}
+
+.theme-preview {
+  width: 52px;
+  height: 34px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: #fff;
+}
+
+.theme-preview svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.theme-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.theme-meta strong {
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.theme-meta span {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.theme-option[aria-checked="true"] .theme-meta span {
+  color: inherit;
+  opacity: 0.85;
+}
+
+.theme-check {
+  width: 16px;
+  height: 16px;
+  opacity: 0;
+}
+
+.theme-option[aria-checked="true"] .theme-check {
+  opacity: 1;
+}
+
+html[data-theme="sap-signature"] .theme-option:hover {
+  background: linear-gradient(180deg, #FFF6D6 0%, #FDE39C 100%);
+  border-color: #BA7F00;
+  color: #1A2D42;
+}
+
+html[data-theme="harbor"] #warehouse-root span.mark {
+  border-radius: 6px;
+  background: linear-gradient(160deg, #1E4E5E, #006E7A);
+}
+
+.brand-mark,
+.login-hero-art {
+  display: block;
+}
+
+.brand-logo.brand-mark {
+  width: 127px;
+  height: 34px;
+  color: inherit;
+}
+
+.login-topbar .brand-logo.brand-mark {
+  width: 149px;
+  height: 42px;
+}
+
+.warehouse-scene.login-hero-art {
+  position: absolute;
+  left: 0;
+  bottom: 54px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 930 / 285;
+}

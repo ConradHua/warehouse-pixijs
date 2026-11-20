@@ -1,0 +1,733 @@
+/* Warehouse ops chrome, scoped to the persistent #warehouse-root node.
+   Embed markup renames (IDs and controller classes stay the same):
+   - header.topbar  -> div.ops-bar
+   - .brand         -> .ops-brand
+   - footer         -> div.ops-status
+   .mark, .header-actions, .search-wrap, .footer-right (#fps-badge) are unchanged.
+   Chrome heights: ops bar 62px + kpi 40px, status strip 38px.
+   #viewport and overlays are absolute against this root.
+   #elevation-modal stays position:fixed so it covers the window. */
+
+#warehouse-root {
+  --ops-bar-h: 62px;
+  --kpi-h: 40px;
+  --status-h: 38px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+  color: var(--ink);
+  background: var(--shell-bg);
+}
+#warehouse-root,
+#warehouse-root * { box-sizing: border-box; }
+#warehouse-root[hidden] { display: none !important; }
+#warehouse-root [hidden] { display: none !important; }
+
+/* Lift the root above the shell nav only while the elevation modal is open. */
+#warehouse-root:has(#elevation-modal:not([hidden])) { z-index: 40; }
+
+#warehouse-root button {
+  font: inherit;
+  cursor: pointer;
+  color: inherit;
+  border: 1px solid var(--border);
+  background: var(--panel-solid, var(--panel));
+  border-radius: var(--radius-control, 6px);
+  padding: 7px 12px;
+  transition: background 0.14s, border-color 0.14s;
+}
+#warehouse-root button:hover { background: var(--ops-surface); }
+#warehouse-root button:focus-visible,
+#warehouse-root input:focus-visible,
+#warehouse-root select:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+#warehouse-root code {
+  font-family: Consolas, "Cascadia Mono", monospace;
+  font-size: 11px;
+  background: #edf1ec;
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: #2b4440;
+}
+
+/* Local ops bar (search, reset, sim toggle). Does not use .topbar. */
+#warehouse-root .ops-bar {
+  height: var(--ops-bar-h);
+  background: var(--ops-surface);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 22px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 15;
+}
+#warehouse-root .ops-brand { display: flex; align-items: center; gap: 11px; font-size: 15px; font-weight: 600; white-space: nowrap; }
+#warehouse-root .mark {
+  background: var(--ops-accent);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  font-family: Georgia, serif;
+  font-size: 20px;
+  border-radius: var(--radius-control, 6px);
+  flex-shrink: 0;
+}
+#warehouse-root .mark.brand-mark,
+#warehouse-root svg.mark {
+  background: transparent;
+  padding: 0;
+  border: 0;
+}
+#warehouse-root .ops-brand small { display: block; font-size: 9px; letter-spacing: 1.5px; margin-top: 2px; color: var(--muted); font-weight: 500; }
+
+/* Unified Search: mode select and input are one control; Locate stays separate. */
+#warehouse-root .search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  max-width: 680px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "mode input submit";
+  align-items: center;
+}
+#warehouse-root .search-wrap select {
+  grid-area: mode;
+  height: 36px;
+  width: auto;
+  margin: 0;
+  padding: 0 26px 0 10px;
+  border: 1px solid var(--border);
+  border-right: 0;
+  border-radius: var(--radius-control, 6px) 0 0 var(--radius-control, 6px);
+  background-color: var(--status-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23354d46' d='M0 0h10L5 6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+#warehouse-root .search-wrap input {
+  grid-area: input;
+  min-width: 0;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 0 var(--radius-control, 6px) var(--radius-control, 6px) 0;
+  padding: 0 32px 0 12px;
+  font: inherit;
+  font-size: 12.5px;
+  background: var(--panel-solid, var(--panel));
+  color: var(--ink);
+  box-shadow: var(--input-well, none);
+}
+#warehouse-root .icon-clear {
+  grid-area: input;
+  justify-self: end;
+  align-self: center;
+  z-index: 2;
+  margin-right: 4px;
+  border: 0;
+  background: transparent;
+  padding: 2px 7px;
+  font-size: 16px;
+  color: #7c8982;
+}
+#warehouse-root .icon-clear:hover { background: transparent; color: var(--ink); }
+#warehouse-root .search-submit {
+  grid-area: submit;
+  height: 36px;
+  margin-left: 6px;
+  background: var(--ops-accent);
+  color: #fff;
+  border-color: var(--ops-accent);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+#warehouse-root .search-submit:hover { background: var(--accent-strong); }
+#warehouse-root .suggestions {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 84px;
+  background: #fff;
+  border: 1px solid #cdd6ce;
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(38, 56, 48, 0.14);
+  z-index: 40;
+  overflow: hidden;
+}
+#warehouse-root .suggest-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0;
+  border-bottom: 1px solid #eef1ec;
+  border-radius: 0;
+  background: #fff;
+  padding: 8px 12px;
+  font-size: 12px;
+  text-align: left;
+}
+#warehouse-root .suggest-item:last-child { border-bottom: 0; }
+#warehouse-root .suggest-item:hover { background: #f2f6f1; }
+#warehouse-root .suggest-badge {
+  font-style: normal;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #e9f2ee;
+  color: #1f6b56;
+}
+#warehouse-root .suggest-badge.is-batch { background: #e8eefb; color: #2f54b2; }
+#warehouse-root .suggest-badge.is-document { background: #f8efe2; color: #8a5a12; }
+#warehouse-root .suggest-badge.is-pda { background: #efe8f6; color: #6d3d86; }
+
+#warehouse-root .header-actions { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+#warehouse-root .overview-return {
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid var(--ops-accent);
+  background: var(--ops-accent-soft);
+  color: var(--accent-strong);
+  font-weight: 700;
+  font-size: 12px;
+  white-space: nowrap;
+}
+#warehouse-root .overview-return[hidden] { display: none; }
+#warehouse-root .modal-header .modal-return { height: 34px; }
+#warehouse-root .stock-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+#warehouse-root .stock-actions .ghost-btn { width: auto; padding: 4px 8px; }
+#warehouse-root .putaway-dest-note {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0;
+  padding: 10px 12px;
+  background: var(--ops-accent-soft);
+  border: 2px solid var(--ops-accent);
+  border-radius: 8px;
+  color: var(--accent-strong);
+}
+#warehouse-root .focus-locator-list { margin: 8px 0 0; padding-left: 18px; }
+#warehouse-root .sim-header-btn { font-size: 12px; background: #eef3ed; border-color: #c2cec4; color: #2d463f; font-weight: 500; }
+
+/* Lightweight KPI Strip */
+#warehouse-root .kpi-bar {
+  height: var(--kpi-h);
+  background: var(--status-bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  position: relative;
+  z-index: 12;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+#warehouse-root .kpi-group { display: flex; align-items: center; gap: 10px; }
+#warehouse-root .kpi-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
+#warehouse-root .kpi-metric { color: #465752; font-size: 12px; }
+#warehouse-root .kpi-metric b { color: #1f332e; font-weight: 700; margin-left: 2px; }
+#warehouse-root .kpi-sep { width: 1px; height: 18px; background: #cfd7d0; flex-shrink: 0; }
+#warehouse-root .kpi-pill {
+  padding: 3px 9px;
+  font-size: 11.5px;
+  border-radius: var(--radius-control, 99px);
+  border: 1px solid var(--border);
+  background: var(--panel-solid, var(--panel));
+  color: var(--ink);
+}
+#warehouse-root .kpi-pill.is-active { background: var(--ops-accent); border-color: var(--ops-accent); color: #fff; }
+#warehouse-root .kpi-pill.pill-in.is-active { background: #2b6cb0; border-color: #2b6cb0; }
+#warehouse-root .kpi-pill.pill-out.is-active { background: #2c855c; border-color: #2c855c; }
+#warehouse-root .kpi-pill.pill-int.is-active { background: #6f52ad; border-color: #6f52ad; }
+
+/* Viewport canvas host, inset below the ops bar + kpi and above the status strip. */
+#warehouse-root #viewport {
+  position: absolute;
+  inset: calc(var(--ops-bar-h) + var(--kpi-h)) 0 var(--status-h);
+  touch-action: none;
+  cursor: grab;
+}
+#warehouse-root #viewport:active { cursor: grabbing; }
+#warehouse-root canvas { display: block; }
+#warehouse-root #loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: #4a5b55;
+}
+
+/* Right inspector (~316px) over the canvas. Camera rightReserve stays 336 in JS. */
+#warehouse-root .inspector {
+  position: absolute;
+  right: 18px;
+  top: calc(var(--ops-bar-h) + var(--kpi-h) + 14px);
+  bottom: calc(var(--status-h) + 56px);
+  width: 316px;
+  background: var(--panel-solid, var(--panel));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-overlay, 10px);
+  box-shadow: var(--shadow-panel, 0 8px 28px rgba(42, 60, 48, 0.11));
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  font-size: 12px;
+  overflow: hidden;
+}
+#warehouse-root .inspector-top { padding: 14px 16px 10px; flex-shrink: 0; }
+#warehouse-root .panel-title { font-weight: 700; font-size: 12.5px; margin-bottom: 10px; }
+#warehouse-root .panel-title span { float: right; font-weight: 500; font-size: 9px; color: #8c988f; letter-spacing: 1px; }
+#warehouse-root .layer-checks { display: flex; gap: 12px; flex-wrap: wrap; }
+#warehouse-root .layer-checks label { display: flex; align-items: center; gap: 5px; cursor: pointer; font-size: 11.5px; }
+#warehouse-root input[type="checkbox"] { accent-color: var(--ops-accent); }
+
+#warehouse-root .legend-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px 6px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed #dce2da;
+  font-size: 10.5px;
+  color: #5a6a64;
+}
+#warehouse-root .legend-grid span { display: flex; align-items: center; gap: 5px; }
+#warehouse-root .lg { width: 10px; height: 10px; border-radius: 2px; display: inline-block; flex-shrink: 0; }
+#warehouse-root .lg-empty { background: #dcdfd9; border: 1px solid #8a9791; }
+#warehouse-root .lg-normal { background: #c9b492; border: 1px solid #8e7a5a; }
+#warehouse-root .lg-hold { background: #d6962a; }
+#warehouse-root .lg-in { background: #2b6cb0; border-radius: 50%; }
+#warehouse-root .lg-out { background: #2c855c; border-radius: 50%; }
+#warehouse-root .lg-int { background: #6f52ad; border-radius: 50%; }
+
+#warehouse-root .rule { height: 1px; background: #dce2d9; flex-shrink: 0; }
+#warehouse-root .inspector-body {
+  padding: 14px 16px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#warehouse-root .empty-hint strong { display: block; font-size: 13px; margin-bottom: 6px; color: #273734; }
+#warehouse-root .empty-hint p { margin: 0; line-height: 1.6; color: #5f6f69; font-size: 12px; }
+#warehouse-root .quick-chips { display: flex; flex-direction: column; gap: 6px; }
+#warehouse-root .sub-label { font-size: 11px; font-weight: 700; color: #5b6d66; margin-bottom: 4px; }
+#warehouse-root .chip-btn { text-align: left; font-size: 11.5px; padding: 6px 10px; background: #eff3ee; border-color: #d0dbd2; color: #2a453d; }
+
+#warehouse-root .detail-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+#warehouse-root .detail-title { font-size: 15px; font-weight: 700; color: #20312e; }
+#warehouse-root .detail-sub { font-size: 11px; color: #677770; margin-top: 3px; line-height: 1.4; }
+#warehouse-root .state-tag { font-size: 10.5px; font-weight: 600; padding: 3px 8px; border-radius: 99px; white-space: nowrap; }
+#warehouse-root .st-empty { background: #e5e9e5; color: #586762; }
+#warehouse-root .st-normal { background: #e3f1ea; color: #1c6b53; }
+#warehouse-root .st-hold { background: #fdf0d5; color: #9c620a; }
+#warehouse-root .st-zone { background: #e5edf4; color: #29567d; }
+
+#warehouse-root .fact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+#warehouse-root .fact-card { background: #fff; border: 1px solid #dde3db; border-radius: 7px; padding: 9px 10px; }
+#warehouse-root .fact-wide { grid-column: span 2; }
+#warehouse-root .fact-label { display: block; font-size: 10.5px; color: #6d7c75; }
+#warehouse-root .fact-val { display: block; font-size: 17px; color: #1f332e; margin-top: 2px; }
+#warehouse-root .fact-note { display: block; font-size: 10px; color: #8c6a27; margin-top: 3px; }
+
+#warehouse-root .section-block { display: flex; flex-direction: column; gap: 6px; }
+#warehouse-root .mini-pda { display: flex; align-items: center; gap: 6px; font-size: 11.5px; padding: 5px 8px; background: #fff; border: 1px solid #e1e6df; border-radius: 6px; }
+#warehouse-root .pda-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+#warehouse-root .pda-dot.cat-inbound { background: #2b6cb0; }
+#warehouse-root .pda-dot.cat-outbound { background: #2c855c; }
+#warehouse-root .pda-dot.cat-internal { background: #6f52ad; }
+#warehouse-root .muted-text { color: #7e8b84; font-size: 11.5px; }
+#warehouse-root .muted-mini { color: #8c9891; font-size: 10.5px; }
+
+#warehouse-root .action-row { display: flex; flex-direction: column; gap: 7px; margin-top: 2px; }
+#warehouse-root .primary-btn { background: var(--ops-accent); color: #fff; border-color: var(--ops-accent); font-weight: 600; padding: 9px 12px; }
+#warehouse-root .primary-btn:hover { background: var(--accent-strong); }
+#warehouse-root .ghost-btn { background: #fff; color: #364b45; font-size: 11.5px; }
+
+/* Floor Zone Inventory Cards */
+#warehouse-root .zone-list { display: flex; flex-direction: column; gap: 8px; }
+#warehouse-root .zone-item-card { background: #fff; border: 1px solid #dce2da; border-radius: 7px; padding: 9px 10px; }
+#warehouse-root .zone-item-top,
+#warehouse-root .zone-item-meta,
+#warehouse-root .zone-item-foot { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+#warehouse-root .zone-item-name { font-size: 11.5px; color: #4e5e58; margin: 3px 0 5px; }
+#warehouse-root .zone-item-meta { font-size: 11px; color: #5c6c66; }
+#warehouse-root .zone-item-foot { margin-top: 6px; padding-top: 5px; border-top: 1px dashed #e6ebe4; font-size: 10.5px; color: #76847d; }
+
+#warehouse-root .inv-status { font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+#warehouse-root .inv-status.st-available { background: #e3f2eb; color: #1b6b4f; }
+#warehouse-root .inv-status.st-allocated { background: #e4eefb; color: #2755a8; }
+#warehouse-root .inv-status.st-hold { background: #fcefd4; color: #9c6109; }
+
+#warehouse-root .lineage-btn {
+  padding: 2px 7px;
+  font-size: 10.5px;
+  background: var(--ops-accent-soft);
+  border-color: var(--accent-soft);
+  color: var(--accent-strong);
+  font-weight: 600;
+}
+#warehouse-root .lineage-btn:hover { background: var(--accent-soft); }
+#warehouse-root .inline-lineage { margin-left: 6px; }
+
+/* Split Lineage Tree */
+#warehouse-root .lineage-legend { display: flex; flex-wrap: wrap; gap: 8px; font-size: 10.5px; color: #60706a; margin-bottom: 4px; }
+#warehouse-root .lineage-legend span { display: flex; align-items: center; gap: 4px; }
+#warehouse-root .swatch { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+#warehouse-root .sw-primary { background: var(--ops-accent); }
+#warehouse-root .sw-secondary { background: #3b63c6; }
+#warehouse-root .sw-depleted { background: #b4bdb8; }
+
+#warehouse-root .lineage-tree { display: flex; flex-direction: column; gap: 6px; }
+#warehouse-root .lineage-node {
+  background: #fff;
+  border: 1px solid #dce2da;
+  border-left: 3px solid #3b63c6;
+  border-radius: 6px;
+  padding: 7px 8px;
+}
+#warehouse-root .lineage-node.is-primary { border-left-color: var(--ops-accent); background: var(--ops-accent-soft); }
+#warehouse-root .lineage-node.is-depleted { border-left-color: #aeb8b3; background: #f5f6f4; opacity: 0.78; }
+#warehouse-root .lineage-node-head { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+#warehouse-root .lineage-dot { width: 7px; height: 7px; border-radius: 50%; background: #3b63c6; }
+#warehouse-root .lineage-node.is-primary .lineage-dot { background: var(--ops-accent); }
+#warehouse-root .lineage-node.is-depleted .lineage-dot { background: #9aa5a0; }
+#warehouse-root .lineage-note { font-size: 10.5px; color: #6e7c76; }
+#warehouse-root .lineage-node-locs { margin-top: 5px; display: flex; flex-wrap: wrap; gap: 4px; }
+#warehouse-root .depleted-tag { font-size: 10.5px; color: #7c8782; }
+
+#warehouse-root .batch-group-card { background: #fff; border: 1px solid #dce2da; border-radius: 7px; padding: 8px 9px; }
+#warehouse-root .batch-group-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+#warehouse-root .loc-jump-list { display: flex; flex-wrap: wrap; gap: 4px; }
+#warehouse-root .loc-jump {
+  font-size: 10.5px;
+  padding: 3px 7px;
+  background: #f0f5f2;
+  border-color: #c2d4cb;
+  color: #1f4f42;
+}
+#warehouse-root .loc-jump.is-zone { background: #eef2fa; border-color: #c4d0ea; color: #2b4e93; }
+
+/* PDA Popover */
+#warehouse-root .pda-popover {
+  position: absolute;
+  left: 20px;
+  top: calc(var(--ops-bar-h) + var(--kpi-h) + 16px);
+  width: 280px;
+  background: rgba(250, 251, 248, 0.98);
+  border: 1px solid #cbd5cc;
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: 0 10px 30px rgba(34, 52, 44, 0.16);
+  z-index: 20;
+  font-size: 12px;
+}
+#warehouse-root .popover-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: 0;
+  background: transparent;
+  font-size: 16px;
+  padding: 2px 7px;
+  color: #6e7c75;
+}
+#warehouse-root .pda-card-head { display: flex; align-items: center; gap: 7px; padding-right: 20px; margin-bottom: 10px; }
+#warehouse-root .pda-cat-tag { font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 99px; color: #fff; }
+#warehouse-root .pda-cat-tag.cat-inbound { background: #2b6cb0; }
+#warehouse-root .pda-cat-tag.cat-outbound { background: #2c855c; }
+#warehouse-root .pda-cat-tag.cat-internal { background: #6f52ad; }
+#warehouse-root .pda-dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; font-size: 11.5px; }
+#warehouse-root .pda-dl dt { color: #718079; }
+#warehouse-root .pda-dl dd { margin: 0; text-align: right; color: #253432; font-weight: 500; }
+#warehouse-root .pda-jump-btn { width: 100%; margin-top: 10px; }
+#warehouse-root .cluster-list { display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow-y: auto; }
+#warehouse-root button.cluster-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  text-align: left;
+  font-size: 11.5px;
+  padding: 5px 7px;
+  background: #fff;
+  border: 1px solid #e2e7e0;
+  border-radius: 6px;
+}
+#warehouse-root button.cluster-row:hover { background: #f3faf7; border-color: #7daba0; }
+#warehouse-root .cluster-row code { margin-left: auto; }
+
+/* Collapsible Mock Simulator Drawer */
+#warehouse-root .sim-drawer {
+  position: absolute;
+  left: 18px;
+  bottom: calc(var(--status-h) + 14px);
+  z-index: 16;
+}
+#warehouse-root .sim-pill {
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--ops-accent);
+  color: #fff;
+  border-color: var(--ops-accent);
+  box-shadow: 0 6px 20px rgba(34, 52, 44, 0.18);
+}
+#warehouse-root .sim-pill:hover { background: var(--accent-strong); }
+#warehouse-root .sim-panel {
+  display: none;
+  width: 410px;
+  max-width: calc(100vw - 36px);
+  background: rgba(248, 249, 244, 0.98);
+  border: 1px solid #cbd5cc;
+  border-radius: 10px;
+  padding: 13px 15px;
+  box-shadow: 0 12px 32px rgba(34, 52, 44, 0.18);
+  position: relative;
+}
+#warehouse-root .sim-drawer.is-open .sim-pill { display: none; }
+#warehouse-root .sim-drawer.is-open .sim-panel { display: block; }
+#warehouse-root .sim-head { margin-bottom: 10px; padding-right: 22px; font-size: 12.5px; }
+#warehouse-root .sim-head small { font-weight: 400; color: #7e8b84; margin-left: 6px; font-size: 10.5px; }
+#warehouse-root .sim-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+#warehouse-root .sim-actions button { font-size: 11.5px; padding: 6px 8px; text-align: left; background: #fff; }
+#warehouse-root .sim-actions button.is-active { background: var(--ops-accent); color: #fff; border-color: var(--ops-accent); }
+#warehouse-root #sim-stress { grid-column: span 2; text-align: center; font-weight: 600; }
+#warehouse-root .sim-log {
+  max-height: 128px;
+  overflow-y: auto;
+  background: #f1f4ee;
+  border: 1px solid #dde3db;
+  border-radius: 6px;
+  padding: 7px 9px;
+  font-size: 11px;
+  line-height: 1.55;
+}
+#warehouse-root .sim-log-row { border-bottom: 1px dashed #dde3db; padding: 2px 0; }
+#warehouse-root .sim-log-row:last-child { border-bottom: 0; }
+#warehouse-root .sim-log-row span { color: #78867f; font-family: Consolas, monospace; margin-right: 5px; }
+
+/* View Zoom + LOD Tools */
+#warehouse-root .view-tools {
+  position: absolute;
+  right: 18px;
+  bottom: calc(var(--status-h) + 12px);
+  display: flex;
+  align-items: center;
+  background: #f8f9f4;
+  border: 1px solid #d0d8cf;
+  border-radius: 7px;
+  box-shadow: 0 4px 14px rgba(42, 60, 48, 0.08);
+  z-index: 10;
+}
+#warehouse-root .lod-badge {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 4px 9px;
+  margin-left: 6px;
+  border-radius: 4px;
+  background: #e9eee8;
+  color: #4f625c;
+}
+#warehouse-root .lod-badge.lod-detail { background: #dff1ea; color: #196850; }
+#warehouse-root .view-tools button { border: 0; background: transparent; font-size: 20px; padding: 5px 12px; }
+#warehouse-root output { font-size: 11.5px; min-width: 44px; text-align: center; font-weight: 600; }
+
+/* 2D Rack Elevation View Modal — fixed to the window, not the slot. */
+#warehouse-root .modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(31, 45, 42, 0.42);
+  backdrop-filter: blur(2px);
+  display: grid;
+  place-items: center;
+  z-index: 50;
+  padding: 24px;
+}
+#warehouse-root .modal-backdrop[hidden] { display: none !important; }
+#warehouse-root .modal-sheet {
+  width: 960px;
+  max-width: 100%;
+  max-height: 90vh;
+  background: #f8f9f4;
+  border: 1px solid #c9d3ca;
+  border-radius: 12px;
+  box-shadow: 0 22px 60px rgba(20, 34, 30, 0.28);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+#warehouse-root .modal-header {
+  padding: 15px 22px;
+  background: #fff;
+  border-bottom: 1px solid #dce2da;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+#warehouse-root .modal-actions { display: flex; align-items: center; gap: 8px; }
+#warehouse-root .modal-header h2 { margin: 0; font-size: 17px; color: #1f312e; }
+#warehouse-root .modal-meta { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #63736c; margin-top: 4px; }
+#warehouse-root .modal-close { font-size: 12px; padding: 6px 12px; }
+
+#warehouse-root .modal-body {
+  padding: 16px 22px 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+#warehouse-root .elev-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 11.5px; color: #54655f; }
+#warehouse-root .elev-legend span { display: flex; align-items: center; gap: 5px; }
+#warehouse-root .el { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+#warehouse-root .el-empty { background: #eff2ee; border: 1px dashed #a9b5ae; }
+#warehouse-root .el-occ { background: #efe4ce; border: 1px solid #b69d73; }
+#warehouse-root .el-hold { background: #fce6bd; border: 1px solid #d49222; }
+#warehouse-root .el-pri { background: var(--ops-accent-soft); border: 2px solid var(--ops-accent); }
+#warehouse-root .el-sec { background: #dfe8fc; border: 2px solid #3b63c6; }
+
+/* 2D Light-3D Steel Rack Frame */
+#warehouse-root .elev-rack-frame {
+  background: #eef1ec;
+  border: 2px solid #4d6776;
+  border-radius: 8px;
+  padding: 14px 16px 10px;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.7), 4px 5px 0 #c6cfc9;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#warehouse-root .elev-level-row { display: flex; align-items: stretch; gap: 10px; }
+#warehouse-root .elev-level-tag {
+  width: 34px;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 12px;
+  color: #3a525f;
+  flex-shrink: 0;
+}
+#warehouse-root .elev-bays {
+  flex: 1;
+  display: grid;
+  gap: 10px;
+  padding-bottom: 8px;
+  border-bottom: 6px solid #b97042;
+  border-radius: 2px;
+}
+#warehouse-root .elev-bays.beam-flow { border-bottom-color: #4f7f77; }
+#warehouse-root .elev-bay-headers { display: flex; gap: 10px; margin-top: -2px; }
+#warehouse-root .elev-bay-cols { flex: 1; display: grid; gap: 10px; text-align: center; font-size: 11px; font-weight: 600; color: #5b6d67; }
+
+#warehouse-root .loc-cell {
+  position: relative;
+  min-height: 62px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 8px 11px;
+  border-radius: 6px;
+  text-align: left;
+  box-shadow: inset 0 -3px 0 rgba(40, 56, 52, 0.08), 2px 2px 0 rgba(62, 82, 78, 0.14);
+}
+#warehouse-root .loc-cell.is-empty { background: #f6f7f4; border: 1px dashed #b4bfb8; color: #7b8882; }
+#warehouse-root .loc-cell.is-occupied { background: #f3ead7; border: 1px solid #c3ac84; color: #362e20; }
+#warehouse-root .loc-cell.is-hold { background: #fce9c5; border: 1.5px solid #d49222; color: #694106; }
+#warehouse-root .loc-cell.is-match-primary { background: var(--ops-accent-soft); border: 2px solid var(--ops-accent); color: var(--accent-strong); }
+#warehouse-root .loc-cell.is-match-secondary { background: #e0e9fd; border: 2px solid #3b63c6; color: #1c3880; }
+#warehouse-root .loc-cell.is-selected { outline: 3px solid var(--focus-ring); outline-offset: 1px; transform: translateY(-1px); }
+
+#warehouse-root .loc-code { font-family: Consolas, monospace; font-size: 11px; font-weight: 700; }
+#warehouse-root .loc-summary { font-size: 11.5px; opacity: 0.92; }
+#warehouse-root .loc-flag {
+  position: absolute;
+  top: 6px;
+  right: 7px;
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 99px;
+}
+#warehouse-root .flag-hold { background: #d6962a; color: #fff; }
+#warehouse-root .flag-alloc { background: #3b63c6; color: #fff; }
+
+/* Inventory Table */
+#warehouse-root .elev-table-section { display: flex; flex-direction: column; gap: 8px; }
+#warehouse-root .elev-table-heading { font-size: 13px; font-weight: 700; color: #253633; }
+#warehouse-root .elev-table-wrap { background: #fff; border: 1px solid #dce2da; border-radius: 8px; overflow-x: auto; }
+#warehouse-root .elev-empty-table { padding: 20px; text-align: center; color: #7c8982; font-size: 12.5px; }
+#warehouse-root .inv-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+#warehouse-root .inv-table th {
+  background: #f1f4ef;
+  color: #4f605a;
+  font-weight: 600;
+  text-align: left;
+  padding: 9px 12px;
+  border-bottom: 1px solid #dce2da;
+  white-space: nowrap;
+}
+#warehouse-root .inv-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid #eef1ec;
+  vertical-align: middle;
+}
+#warehouse-root .inv-table tr:last-child td { border-bottom: 0; }
+
+/* In-root status strip (FPS lives here; does not replace the shell statusbar). */
+#warehouse-root .ops-status {
+  height: var(--status-h);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--ops-surface);
+  border-top: 1px solid var(--border);
+  font-size: 10.5px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  z-index: 12;
+}
+#warehouse-root .ops-status i { display: inline-block; width: 6px; height: 6px; background: #2c855c; border-radius: 50%; margin-right: 6px; }
+#warehouse-root .ops-status b { font-weight: 600; color: #314b42; }
+#warehouse-root .ops-status em { font-style: normal; margin: 0 8px; color: #b4beb7; }
+#warehouse-root .footer-right { font-family: Consolas, monospace; color: #465b54; font-weight: 600; }
+
+@media (max-width: 1120px) {
+  #warehouse-root .inspector { width: 274px; }
+  #warehouse-root .ops-brand small { display: none; }
+}
+@media (max-width: 780px) {
+  #warehouse-root .ops-bar { padding: 0 12px; gap: 8px; }
+  #warehouse-root .header-actions #sim-toggle-header { display: none; }
+  #warehouse-root .inspector { width: 240px; right: 10px; top: calc(var(--ops-bar-h) + var(--kpi-h) + 8px); bottom: calc(var(--status-h) + 54px); }
+  #warehouse-root .footer-right { display: none; }
+  #warehouse-root .modal-backdrop { padding: 10px; }
+}

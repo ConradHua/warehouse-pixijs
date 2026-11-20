@@ -1,0 +1,9 @@
+.browser-profile*/
+
+# 运行时产物
+node_modules/
+*.log
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
